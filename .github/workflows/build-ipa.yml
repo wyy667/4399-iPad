@@ -45,6 +45,7 @@ jobs:
           cd package
           zip -qry ../Flash4399-resignable.ipa Payload
           cd ..
+          python3 scripts/validate-ipa.py Flash4399-resignable.ipa
           shasum -a 256 Flash4399-resignable.ipa > Flash4399-resignable.ipa.sha256
       - uses: actions/upload-artifact@v4
         with:

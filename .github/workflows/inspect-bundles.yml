@@ -1,0 +1,27 @@
+name: Compare native bundle recognition
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download old and corrected packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v0.1.1 --repo "$GITHUB_REPOSITORY" --pattern '*.ipa' --dir old
+          gh run download 45638136231 --repo "$GITHUB_REPOSITORY" --name Flash4399-resignable-ipa --dir corrected
+          unzip -q old/*.ipa -d old/unpacked
+          unzip -q corrected/*.ipa -d corrected/unpacked
+      - name: Compare Foundation bundle discovery
+        run: |
+          osascript -l JavaScript scripts/inspect-bundle.js "$PWD/old/unpacked/Payload/Flash4399.app" | tee old-bundle.json
+          osascript -l JavaScript scripts/inspect-bundle.js "$PWD/corrected/unpacked/Payload/Flash4399.app" | tee corrected-bundle.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-bundle-recognition
+          path: '*-bundle.json'
