@@ -1,14 +1,21 @@
 name: Validate simulator installation
 on:
   workflow_dispatch:
+    inputs:
+      revision:
+        description: Commit to validate
+        default: main
+        required: true
 permissions:
   contents: read
 jobs:
   install:
-    runs-on: macos-15
+    runs-on: macos-15-intel
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.revision }}
       - name: Build simulator application
         run: |
           set -euo pipefail
