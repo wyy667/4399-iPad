@@ -4,7 +4,9 @@
 
 ## 在 iPad 上安装
 
-需要 iPadOS 16.4 或以上的 iPad。仓库已配置 GitHub Actions：推送到 `main` 或手动运行 **Build re-signable iPad IPA**，会使用 macOS/Xcode 编译并上传 `Flash4399-resignable-ipa` artifact。解压得到 IPA 后，用你自己的签名工具签名安装；产物不含开发者证书签名或 provisioning profile。
+需要 iOS / iPadOS 16.4 或以上的设备。从 0.1.2 起同时声明支持 iPhone 和 iPad。仓库已配置 GitHub Actions：推送到 `main` 或手动运行 **Build re-signable iPad IPA**，会使用 macOS/Xcode 编译并上传 `Flash4399-resignable-ipa` artifact。解压得到 IPA 后，用你自己的签名工具签名安装；产物不含开发者证书签名或 provisioning profile。
+
+**0.1.2 安装修复：** 旧版把播放器目录作为 `Resources` 放在 `.app` 根目录，影响系统 Bundle 识别。macOS Foundation 对真实 IPA 的对照检查中，0.1.1 的 `NSBundle.bundleIdentifier` 为 `null`；改为 `WebAssets` 后正确返回 `com.example.Flash4399`。已同步更新工程和读取路径，并增加发布包结构检查。此结果证明修复了系统包识别问题，不代表已经完成用户设备的自签安装验证。
 
 从 0.1.1 起，打包前先用苹果 `codesign -s -` 创建本地 ad-hoc 签名区与资源封印，再执行严格校验，避免向重新签名工具提供完全没有签名区的可执行文件。这不是用于设备安装的开发者 Ad Hoc 分发签名，仍须重新签名。此改动用于排查 0.1.0 在全能签中的安装失败，尚未确认具体失败原因或真机修复结果。
 
