@@ -1,0 +1,35 @@
+name: Validate simulator installation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  install:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build simulator application
+        run: |
+          set -euo pipefail
+          xcodebuild -project Flash4399.xcodeproj -scheme Flash4399 -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath sim-build CODE_SIGNING_ALLOWED=NO build > sim-build.log 2>&1
+      - name: Install and launch in iPad simulator
+        run: |
+          set -euo pipefail
+          xcrun simctl list devices available --json > devices.json
+          DEVICE=$(python3 -c 'import json; d=json.load(open("devices.json")); print(next(x["udid"] for v in d["devices"].values() for x in v if "iPad" in x["name"]))')
+          xcrun simctl boot "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
+          xcrun simctl install "$DEVICE" sim-build/Build/Products/Debug-iphonesimulator/Flash4399.app 2>&1 | tee install.log
+          xcrun simctl launch "$DEVICE" com.example.Flash4399 2>&1 | tee launch.log
+          sleep 10
+          xcrun simctl io "$DEVICE" screenshot simulator.png
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simulator-install-diagnostics
+          path: |
+            sim-build.log
+            install.log
+            launch.log
+            simulator.png
