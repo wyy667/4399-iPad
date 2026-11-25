@@ -16,6 +16,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Show Xcode version
         run: xcodebuild -version
+      - name: Test large native asset reads
+        run: |
+          swiftc -swift-version 5 Flash4399/GameAssets.swift tests/native-assets.swift -o /tmp/flash4399-native-assets
+          /tmp/flash4399-native-assets
       - name: Build for physical iPad without signing
         run: |
           set -euo pipefail

@@ -15,6 +15,7 @@ final class BrowserViewController: UIViewController, WKNavigationDelegate, WKUID
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        gameAssets.onFailure = { [weak self] message in self?.loadError = message }
         let config = WKWebViewConfiguration()
         config.websiteDataStore = .default()
         config.defaultWebpagePreferences.preferredContentMode = .desktop
@@ -87,6 +88,9 @@ final class BrowserViewController: UIViewController, WKNavigationDelegate, WKUID
         guard presentedViewController == nil else { return }
         releaseInput()
         let menu = UIAlertController(title: "4399", message: loadError ?? "三指轻点或 ⌘, 打开此菜单", preferredStyle: .actionSheet)
+        if let loadError {
+            menu.addAction(UIAlertAction(title: "复制加载错误", style: .default) { _ in UIPasteboard.general.string = loadError })
+        }
         if webView.canGoBack {
             menu.addAction(UIAlertAction(title: "返回上一页", style: .default) { [weak self] _ in self?.webView.goBack() })
         }

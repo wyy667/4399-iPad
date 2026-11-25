@@ -30,6 +30,8 @@ xcodebuild -project Flash4399.xcodeproj -scheme Flash4399 \
 
 ## 使用
 
+**0.1.3 大文件修复：**《死神 VS 火影 3.3》的主 SWF 实测为 69,072,554 字节，超过旧版 64 MiB 限制。现提高到 256 MiB，并将单次资源下载总超时延长到 10 分钟。加载失败时可在隐藏菜单复制具体错误。WebKit 网页测试已加载主 SWF 并读出 800×600 元数据，测试环境随后要求网站登录，未验证完整对战。CI 增加生产 Swift 分块读取器跨越旧 64 MiB 边界的检查。
+
 - 启动自动进入 4399，采用桌面浏览模式，避免网站直接转到移动游戏目录。
 - 点击游戏画面使其获得焦点，再使用外接键盘；鼠标点击和移动走 WebKit 原生输入。
 - 点击需要新窗口的链接会在当前窗口打开。
@@ -58,7 +60,7 @@ xcodebuild -project Flash4399.xcodeproj -scheme Flash4399 \
 - Ruffle 的 JavaScript 以 WKUserScript 在各 frame 的页面开始时注入；补充 ready 事件扫描以处理 WebKit iframe 初始化时序。
 - 使用 WebKit 公开内容规则，仅阻止 `/jss/flashopen1.js`：这个旧插件检测器在约 600 毫秒后就会删除游戏区，早于 WASM 初始化完成。播放器自身负责显示加载失败信息；不修改网站登录或年龄验证逻辑。
 - WASM 从 App Bundle 分块读取，通过仅允许固定文件名的只读消息桥提供给播放器，避免 CDN 依赖和大块 base64 峰值。
-- 4399 的游戏 CDN 没有提供网页 CORS 响应头。仅当网页 GET 失败时，使用 URLSession 读取 HTTPS 的 `4399.com` / `5054399.com` 下 `/4399swf/` 或 `/upload_swf/` 素材路径，按 256 KB 分块传回播放器。只接受来自这些站点的 frame，不带 Cookie，不代理账号请求；限制单文件 64 MB、缓存 8 个文件，并校验重定向。无通用网络代理或 WebKit 私有 API。其他跨域资源、CSP、登录和失效服务仍可能阻止游戏运行。
+- 4399 的游戏 CDN 没有提供网页 CORS 响应头。仅当网页 GET 失败时，使用 URLSession 读取 HTTPS 的 `4399.com` / `5054399.com` 下 `/4399swf/` 或 `/upload_swf/` 素材路径，按 256 KB 分块传回播放器。只接受来自这些站点的 frame，不带 Cookie，不代理账号请求；限制单文件 256 MiB、缓存 8 个文件，并校验重定向。无通用网络代理或 WebKit 私有 API。其他跨域资源、CSP、登录和失效服务仍可能阻止游戏运行。
 - 4399 的 Flash 检测与加载器依赖 ExternalInterface，因此仅在 `4399.com`、`5054399.com` 及其子域启用 SWF 与网页脚本交互，其他域默认关闭。
 - 键鼠采用系统原生网页输入，不做全局合成按键注入；3D FPS 的相对鼠标/指针锁定不在本版范围。
 - 为旧站点设置 `NSAllowsArbitraryLoadsInWebContent`，只放宽 WebView 的 ATS；这不会关闭浏览器的混合内容和跨域限制。

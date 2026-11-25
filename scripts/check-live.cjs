@@ -23,7 +23,7 @@ const resource = path.join(root, 'Flash4399/WebAssets');
         const response = await fetch(url, { headers: { Referer: 'https://www.4399.com/' } });
         if (!response.ok) throw Error('Asset HTTP ' + response.status);
         const data = Buffer.from(await response.arrayBuffer());
-        if (data.length > 64*1024*1024) throw Error('Asset too large');
+        if (data.length > 256*1024*1024) throw Error('Asset too large');
         return { data, mime: response.headers.get('content-type') || 'application/octet-stream' };
       })());
       const result = await gameCache.get(url);
@@ -48,7 +48,10 @@ const resource = path.join(root, 'Flash4399/WebAssets');
       await popup.close();
       await page.goto(destination, { waitUntil: 'domcontentloaded', timeout: 45000 });
     }
-    await page.waitForTimeout(15000);
+    // Large SWFs take longer than the 15-second probe used for small games.
+    await page.waitForFunction(() => [...document.querySelectorAll('ruffle-embed,ruffle-object,ruffle-player')]
+      .some(el => (el.ruffle().metadata?.width || 0) > 100 && (el.ruffle().metadata?.height || 0) > 100),
+      null, { timeout: 120000 }).catch(() => {});
     const frames=[];
     for(const frame of page.frames()) {
       try {frames.push(await frame.evaluate(()=>({url:location.href,players:[...document.querySelectorAll('ruffle-object,ruffle-embed,ruffle-player')].map(el=>({metadata:el.ruffle().metadata,html:el.outerHTML.slice(0,500)}))})));}catch{}
