@@ -1,0 +1,11 @@
+node_modules/
+test-results/
+playwright-report/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+scripts/*.zip
+artifacts/
+build/
+package/
+*.ipa

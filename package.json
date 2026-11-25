@@ -1,0 +1,22 @@
+{
+  "name": "flash4399-ipad",
+  "version": "1.0.0",
+  "description": "iPad full-screen 4399 browser with a bundled local Ruffle runtime",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:webkit": "playwright test --project=webkit"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "pngjs": "^7.0.0",
+    "xcode": "^4.0.0"
+  },
+  "private": true
+}

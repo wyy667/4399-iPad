@@ -1,0 +1,9 @@
+[
+  {
+    "trigger": {
+      "url-filter": "^https?://www\\.4399\\.com/jss/flashopen1\\.js([?].*)?$",
+      "resource-type": ["script"]
+    },
+    "action": { "type": "block" }
+  }
+]
