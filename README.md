@@ -76,5 +76,5 @@ npm test
 Ruffle 0.8.0 来自官方 release 的 `ruffle-0.8.0-web-selfhosted.zip`：
 https://github.com/ruffle-rs/ruffle/releases/tag/v0.8.0
 
-原始播放器文件未修改，许可证位于 `Flash4399/Resources/Ruffle/LICENSE_MIT` 和 `LICENSE_APACHE`。
+原始播放器文件未修改，许可证位于 `Flash4399/WebAssets/Ruffle/LICENSE_MIT` 和 `LICENSE_APACHE`。
 工程未打包任何 4399 商业游戏素材。自检 SWF 由本工程脚本生成。

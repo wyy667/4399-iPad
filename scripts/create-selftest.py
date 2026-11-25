@@ -53,5 +53,5 @@ html = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
 <p><input placeholder="验证网页文字输入仍然正常"></p>
 <p><a href="https://www.4399.com/">返回 4399</a> · 三指轻点打开菜单</p>
 </html>'''
-(root/'Flash4399'/'Resources'/'selftest.html').write_text(html,encoding='utf8')
+(root/'Flash4399'/'WebAssets'/'selftest.html').write_text(html,encoding='utf8')
 print('Created original SWF fixture and offline self-test page')

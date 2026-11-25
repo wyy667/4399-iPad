@@ -35,7 +35,7 @@ jobs:
           mkdir -p package/Payload
           cp -R build/Build/Products/Release-iphoneos/Flash4399.app package/Payload/
           test -f package/Payload/Flash4399.app/Flash4399
-          test -f package/Payload/Flash4399.app/Resources/Ruffle/ruffle_web_bg.QDRSAAAZ.wasm
+          test -f package/Payload/Flash4399.app/WebAssets/Ruffle/ruffle_web_bg.QDRSAAAZ.wasm
           /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' package/Payload/Flash4399.app/Info.plist
           # Create a real signature slot and resource seal before third-party
           # re-signing. This local ad-hoc signature is NOT a device install identity.

@@ -3,7 +3,7 @@ const { webkit } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-const resource = path.join(root, 'Flash4399/Resources');
+const resource = path.join(root, 'Flash4399/WebAssets');
 (async () => {
   const browser = await webkit.launch();
   try {

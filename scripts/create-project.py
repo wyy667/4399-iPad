@@ -20,7 +20,7 @@ sources = ['AppDelegate.swift', 'BrowserViewController.swift', 'RuntimeAssets.sw
 for name in sources:
     obj(name, f'isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {name}; sourceTree = "<group>";')
     obj('build-' + name, f'isa = PBXBuildFile; fileRef = {uid(name)};')
-obj('resources', 'isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>";')
+obj('resources', 'isa = PBXFileReference; lastKnownFileType = folder; path = WebAssets; sourceTree = "<group>";')
 obj('build-resources', f'isa = PBXBuildFile; fileRef = {uid("resources")};')
 obj('plist', 'isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>";')
 obj('product', 'isa = PBXFileReference; explicitFileType = wrapper.application; path = Flash4399.app; sourceTree = BUILT_PRODUCTS_DIR;')
@@ -36,7 +36,7 @@ for level in ['project', 'target']:
                     'SWIFT_VERSION = 5.0; ENABLE_USER_SCRIPT_SANDBOXING = YES;')
         if level == 'target':
             settings += (' PRODUCT_BUNDLE_IDENTIFIER = com.example.Flash4399; PRODUCT_NAME = "$(TARGET_NAME)"; '
-                         'INFOPLIST_FILE = Flash4399/Info.plist; TARGETED_DEVICE_FAMILY = 2; '
+                         'INFOPLIST_FILE = Flash4399/Info.plist; TARGETED_DEVICE_FAMILY = "1,2"; '
                          'CODE_SIGN_STYLE = Automatic; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; '
                          'SUPPORTS_MACCATALYST = NO; GENERATE_INFOPLIST_FILE = NO;')
         settings += (' SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf;'

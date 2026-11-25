@@ -10,7 +10,7 @@ final class RuntimeAssets: NSObject, WKScriptMessageHandlerWithReply {
     ]
 
     static func resource(_ name: String) throws -> String {
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "Resources") else {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "WebAssets") else {
             throw CocoaError(.fileNoSuchFile)
         }
         return try String(contentsOf: url, encoding: .utf8)
@@ -22,7 +22,7 @@ final class RuntimeAssets: NSObject, WKScriptMessageHandlerWithReply {
         guard let body = message.body as? [String: Any],
               let name = body["name"] as? String, Self.names.contains(name),
               let offset = body["offset"] as? Int, offset >= 0, offset <= 32 * 1024 * 1024,
-              let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "Resources/Ruffle") else {
+              let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "WebAssets/Ruffle") else {
             replyHandler(nil, "Invalid bundled resource request")
             return
         }

@@ -29,7 +29,7 @@ final class BrowserViewController: UIViewController, WKNavigationDelegate, WKUID
                     source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false))
             }
         } catch {
-            loadError = "播放器资源缺失，请重新构建包含 Resources 的 App。\n\(error.localizedDescription)"
+            loadError = "播放器资源缺失，请重新构建包含 WebAssets 的 App。\n\(error.localizedDescription)"
         }
         webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false

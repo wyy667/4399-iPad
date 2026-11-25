@@ -4,7 +4,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { PNG } = require('pngjs');
 const root = path.resolve(__dirname, '..');
-const resources = path.join(root, 'Flash4399/Resources');
+const resources = path.join(root, 'Flash4399/WebAssets');
 let server, base;
 
 test.beforeAll(async () => {
