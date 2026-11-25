@@ -1,4 +1,4 @@
-name: Build unsigned iPad IPA
+name: Build re-signable iPad IPA
 
 on:
   push:
@@ -37,15 +37,20 @@ jobs:
           test -f package/Payload/Flash4399.app/Flash4399
           test -f package/Payload/Flash4399.app/Resources/Ruffle/ruffle_web_bg.QDRSAAAZ.wasm
           /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' package/Payload/Flash4399.app/Info.plist
+          # Create a real signature slot and resource seal before third-party
+          # re-signing. This local ad-hoc signature is NOT a device install identity.
+          codesign --force --sign - --timestamp=none package/Payload/Flash4399.app
+          codesign --verify --strict --verbose=2 package/Payload/Flash4399.app
+          codesign --display --verbose=4 package/Payload/Flash4399.app 2>&1
           cd package
-          zip -qry ../Flash4399-unsigned.ipa Payload
+          zip -qry ../Flash4399-resignable.ipa Payload
           cd ..
-          shasum -a 256 Flash4399-unsigned.ipa > Flash4399-unsigned.ipa.sha256
+          shasum -a 256 Flash4399-resignable.ipa > Flash4399-resignable.ipa.sha256
       - uses: actions/upload-artifact@v4
         with:
-          name: Flash4399-unsigned-ipa
+          name: Flash4399-resignable-ipa
           path: |
-            Flash4399-unsigned.ipa
-            Flash4399-unsigned.ipa.sha256
+            Flash4399-resignable.ipa
+            Flash4399-resignable.ipa.sha256
           retention-days: 30
           if-no-files-found: error

@@ -4,7 +4,9 @@
 
 ## 在 iPad 上安装
 
-需要 iPadOS 16.4 或以上的 iPad。仓库已配置 GitHub Actions：推送到 `main` 或手动运行 **Build unsigned iPad IPA**，会使用 macOS/Xcode 编译并上传 `Flash4399-unsigned-ipa` artifact。解压得到 IPA 后，用你自己的签名工具签名安装；产物不含开发者签名或 provisioning profile。
+需要 iPadOS 16.4 或以上的 iPad。仓库已配置 GitHub Actions：推送到 `main` 或手动运行 **Build re-signable iPad IPA**，会使用 macOS/Xcode 编译并上传 `Flash4399-resignable-ipa` artifact。解压得到 IPA 后，用你自己的签名工具签名安装；产物不含开发者证书签名或 provisioning profile。
+
+从 0.1.1 起，打包前先用苹果 `codesign -s -` 创建本地 ad-hoc 签名区与资源封印，再执行严格校验，避免向重新签名工具提供完全没有签名区的可执行文件。这不是用于设备安装的开发者 Ad Hoc 分发签名，仍须重新签名。此改动用于排查 0.1.0 在全能签中的安装失败，尚未确认具体失败原因或真机修复结果。
 
 也可在装有 Xcode 的 Mac 上直接安装：
 
